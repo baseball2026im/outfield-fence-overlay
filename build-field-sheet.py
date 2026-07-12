@@ -77,9 +77,14 @@ def render_aerial(fc):
         else:  # chalk endpoints
             m.add_marker(CircleMarker(xy, WHITE, 12)); m.add_marker(CircleMarker(xy, RED, 6))
 
-    # center on the operational features only — the big reference arcs are drawn
-    # (they sweep out toward the trees/banks) but must not inflate the extent,
-    # or the field would shrink and home plate clip.
+    # where the operational arc crosses the soccer penalty-area lines — the fixed,
+    # painted ground references you can hit without a phone (white dot, black ring).
+    for lon, lat in ((11.5297618, 48.0508600), (11.5298250, 48.0508156)):
+        m.add_marker(CircleMarker((lon, lat), BLACK, 10))
+        m.add_marker(CircleMarker((lon, lat), WHITE, 6))
+
+    # center on the operational features only (reference arcs stay in fc but are
+    # not drawn here; excluding them keeps the field from shrinking / clipping).
     op = [f for f in fc["features"]
           if not (f["properties"]["folder"] == "Outfield arcs"
                   and "reference" in f["properties"]["name"].lower())]
@@ -183,7 +188,7 @@ TEMPLATE = """<!DOCTYPE html>
   </p>
 
   <img class="aerial" src="{aerial}" alt="Aerial view of the field with the fence overlay" />
-  <div class="cap">Red = operational fence line · yellow = the 5 pins · white = diamond &amp; foul lines · black = backstop · blue box = soccer penalty area.</div>
+  <div class="cap">Red = operational fence line · yellow = the 5 pins · white = diamond &amp; foul lines · black = backstop · blue box = soccer penalty area, where the two arc crossings (white/black marks) are fixed ground references.</div>
 
   <div class="qrs">
     <div class="qr">
@@ -217,7 +222,7 @@ TEMPLATE = """<!DOCTYPE html>
       <h2>Walk the line &amp; place the fence</h2>
       <ol>
         <li>Tap the <b>GPS / centre</b> button so your dot shows and follows you; wait a moment for the fix to settle.</li>
-        <li><b>Check:</b> stand on a foul corner and confirm your dot sits on that mark.</li>
+        <li><b>Check:</b> stand where the arc crosses the soccer penalty-area lines — a fixed painted reference (or a foul corner) — and confirm your dot sits there.</li>
         <li><b>Roll out roughly:</b> use the aerial above to get oriented, then lay the fence out loosely in the arc's shape between the two foul corners.</li>
         <li><b>Fine-position with the phone:</b> walk the line and nudge each section until your dot sits on the <b>arc line</b>, then stand it upright. The 5 pins mark the key points (corners, mid-arc, centre).</li>
         <li><b>Verify:</b> tape-measure home&nbsp;&rarr;&nbsp;centre pin &asymp; 80&nbsp;m; nudge as needed.</li>
