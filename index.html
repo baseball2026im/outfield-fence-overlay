@@ -48,9 +48,27 @@
   <script>
     const map = L.map('map', { zoomControl: true });
 
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    // Google imagery aligns with the surveyed coordinates (the field was mapped
+    // against Google/OSM), so the overlay sits on the dirt cutouts exactly like
+    // Google My Maps. Esri World Imagery is offered as an alternative but is
+    // georeferenced a couple of metres off here.
+    const googleSat = L.tileLayer('https://mt{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+      subdomains: ['0', '1', '2', '3'], maxZoom: 22, maxNativeZoom: 21,
+      attribution: 'Imagery &copy; Google'
+    });
+    const googleHybrid = L.tileLayer('https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+      subdomains: ['0', '1', '2', '3'], maxZoom: 22, maxNativeZoom: 21,
+      attribution: 'Imagery &copy; Google'
+    });
+    const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 22, maxNativeZoom: 19,
       attribution: 'Imagery &copy; Esri, Maxar, Earthstar Geographics'
+    });
+    googleSat.addTo(map);  // default
+    L.control.layers({
+      'Google Satellite': googleSat,
+      'Google Hybrid': googleHybrid,
+      'Esri World Imagery': esri
     }).addTo(map);
 
     const RED = '#ff3b30', ORANGE = '#ff9500', GREEN = '#34c759',
