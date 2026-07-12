@@ -27,7 +27,8 @@ PDF = os.path.join(HERE, "field-sheet.pdf")
 
 MYMAPS = "https://www.google.com/maps/d/viewer?mid=1lenM0C5zkyE6P6zIqa7H9a0x143gxus"
 KML = "https://baseball2026im.github.io/outfield-fence-overlay/data/field-overlay.kml"
-LOCUS = "https://www.locusmap.app/"
+LOCUS_IOS = "https://apps.apple.com/app/id6443446295"  # Locus Map Lite (iPhone)
+LOCUS_ANDROID = "https://play.google.com/store/apps/details?id=menion.android.locus"  # Locus Map (Android)
 GOOGLE_SAT = "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
 
 RED, WHITE, BLUE, YELLOW, BLACK, DARK = "#ff2d2d", "#ffffff", "#2b6cff", "#ffcc00", "#000000", "#5a4200"
@@ -120,7 +121,8 @@ def main():
         shot=embed_shot(APP_SHOT),
         qr_mymaps=qr(MYMAPS),
         qr_kml=qr(KML),
-        qr_locus=qr(LOCUS),
+        qr_ios=qr(LOCUS_IOS),
+        qr_android=qr(LOCUS_ANDROID),
     )
     with open(OUT, "w") as f:
         f.write(html)
@@ -202,9 +204,14 @@ TEMPLATE = """<!DOCTYPE html>
       <div class="d">Open in Locus Map — import from URL or "open with".</div>
     </div>
     <div class="qr">
-      <img src="{qr_locus}" alt="Locus Map install QR" />
-      <div class="t">Install the app</div>
-      <div class="d"><b>Locus Map Lite</b> (iPhone) · <b>Locus Map</b> (Android) — free, live GPS.</div>
+      <img src="{qr_ios}" alt="Locus Map Lite App Store QR" />
+      <div class="t">iPhone app</div>
+      <div class="d"><b>Locus Map Lite</b> — App&nbsp;Store.</div>
+    </div>
+    <div class="qr">
+      <img src="{qr_android}" alt="Locus Map Play Store QR" />
+      <div class="t">Android app</div>
+      <div class="d"><b>Locus Map</b> — Play&nbsp;Store.</div>
     </div>
   </div>
 
@@ -212,7 +219,7 @@ TEMPLATE = """<!DOCTYPE html>
     <div class="col">
       <h2>Load the fence file into Locus Map</h2>
       <ol>
-        <li>Install the app (bottom QR): iPhone <b>Locus Map Lite</b>, Android <b>Locus Map</b>.</li>
+        <li>Install the app (QRs above): iPhone <b>Locus Map Lite</b>, Android <b>Locus Map</b>.</li>
         <li><b>iPhone / any phone:</b> in Locus Map &rarr; menu (&#9776;) &rarr; <b>Import</b> &rarr; <b>from URL</b>, and paste the <b>Fence file</b> link (scan its QR to copy it).</li>
         <li><b>Android shortcut:</b> just scan the <b>Fence file</b> QR &rarr; the file downloads &rarr; tap <b>Open with Locus Map</b>.</li>
         <li>Import into a folder (e.g.&nbsp;"Baseball"). The arc, diamond and pins now show on the map.</li>
