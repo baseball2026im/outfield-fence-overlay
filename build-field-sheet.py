@@ -224,7 +224,7 @@ TEMPLATE = """<!DOCTYPE html>
         <li>Tap the <b>GPS / centre</b> button so your dot shows and follows you; wait a moment for the fix to settle.</li>
         <li><b>Check:</b> stand where the arc crosses the soccer penalty-area lines — a fixed painted reference (or a foul corner) — and confirm your dot sits there.</li>
         <li><b>Roll out roughly:</b> use the aerial above to get oriented, then lay the fence out loosely in the arc's shape between the two foul corners.</li>
-        <li><b>Fine-position with the phone:</b> walk the line and nudge each section until your dot sits on the <b>arc line</b>, then stand it upright. The 5 pins mark the key points (corners, mid-arc, centre).</li>
+        <li><b>Fine-position with the phone:</b> walk the line and nudge each section until your dot sits on the <b>arc line</b>, then stand it upright.</li>
       </ol>
     </div>
     <div class="shot">
