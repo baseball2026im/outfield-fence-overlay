@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="emit-arc-artifacts.py" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>Baseball field — trial reference points (5 pins)</name>
+    <desc>Five named waypoints on the operational arc for the app-trial walk (tasks.md T3.3). Load in iOS apps that accept GPX (e.g. Locus Maps Lite).</desc>
+  </metadata>
+  <wpt lat="48.05108049069782" lon="11.529623519580033">
+    <name>RF corner — trial</name>
+    <desc>1/5. 66.91 m at 236.23° from home plate.</desc>
+    <sym>Flag, Blue</sym>
+  </wpt>
+  <wpt lat="48.05084184413892" lon="11.529785193830715">
+    <name>RF mid-arc — trial</name>
+    <desc>2/5. 77.20 m at 214.38° from home plate.</desc>
+    <sym>Flag, Blue</sym>
+  </wpt>
+  <wpt lat="48.05071421139396" lon="11.530126997756286">
+    <name>CF apex — trial</name>
+    <desc>3/5. 79.98 m at 193.12° from home plate. Deepest point.</desc>
+    <sym>Flag, Blue</sym>
+  </wpt>
+  <wpt lat="48.05074753621319" lon="11.530515180649552">
+    <name>LF mid-arc — trial</name>
+    <desc>4/5. 74.96 m at 171.77° from home plate.</desc>
+    <sym>Flag, Blue</sym>
+  </wpt>
+  <wpt lat="48.05090566272845" lon="11.530778042628457">
+    <name>LF corner — trial</name>
+    <desc>5/5. 64.21 m at 151.85° from home plate.</desc>
+    <sym>Flag, Blue</sym>
+  </wpt>
+</gpx>

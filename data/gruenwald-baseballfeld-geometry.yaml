@@ -1,0 +1,49 @@
+# Baseball-fence-AR — surveyed field geometry + design parameters.
+# Source of truth for the small-variant operational arc.
+# See design.md §1.4 for the full catalog.
+
+home_plate:
+  lat: 48.05141513323795
+  lon: 11.530370986609773
+
+bases:
+  first_base:        { lat: 48.051324108667785, lon: 11.53016263118982,    dist_m: 18.51, bearing_deg: 236.85 }
+  second_base:       { lat: 48.05119449205331,  lon: 11.530292058824903,   dist_m: 25.21, bearing_deg: 193.46 }
+  third_base:        { lat: 48.05126891449887,  lon: 11.530488877556731,   dist_m: 18.47, bearing_deg: 151.64 }
+
+mound:
+  pitchers_plate:    { lat: 48.05129494623837,  lon: 11.530326166819187,   dist_m: 13.77, bearing_deg: 194.04 }
+  mound_centre:      { lat: 48.05129942892964,  lon: 11.530327508008737,   dist_m: 13.26, bearing_deg: 194.14 }
+
+chalk_foul_endpoints:
+  rf_endpoint:       { lat: 48.05108049069782,  lon: 11.529623519580033,   dist_m: 66.91, bearing_deg: 236.22 }
+  lf_endpoint:       { lat: 48.05090566272845,  lon: 11.530778042628457,   dist_m: 64.21, bearing_deg: 151.86 }
+
+soccer_pa:
+  sw_corner:         { lat: 48.05081599396754,  lon: 11.52976102590142 }
+  se_corner:         { lat: 48.05081285605364,  lon: 11.530301525389968 }
+  ne_corner:         { lat: 48.05095988952818,  lon: 11.530304207769564 }
+  nw_corner:         { lat: 48.05096347570527,  lon: 11.529763708281017 }
+  width_m: 40.22
+  depth_m: 16.36
+
+backstop_curve_pts:
+  - { lat: 48.05147691764964,  lon: 11.530477470562962 }
+  - { lat: 48.0514832785676,   lon: 11.530453001511345 }
+  - { lat: 48.05148963948479,  lon: 11.530436009114387 }
+  - { lat: 48.05149327429428,  lon: 11.530417657325675 }
+  - { lat: 48.05149600040123,  lon: 11.530404063408108 }
+  - { lat: 48.05149918085913,  lon: 11.530376875572975 }
+  - { lat: 48.05149963521024,  lon: 11.530361922263651 }
+  - { lat: 48.05149918085913,  lon: 11.530325898382102 }
+  - { lat: 48.05149418299662,  lon: 11.53028987450055 }
+  - { lat: 48.051483732918875, lon: 11.530249092747853 }
+
+design:
+  variant: small
+  applies_to: BBSV U12 Schüler (60-ft / Little-League scale)
+  rf_corner:         { lat: 48.05108049069782, lon: 11.529623519580033 }   # = chalk RF endpoint
+  lf_corner:         { lat: 48.05090566272845, lon: 11.530778042628457 }   # = chalk LF endpoint
+  apex_bearing_deg:  193.46                                                # home → 2B
+  apex_distance_m:   80                                                    # CF apex from home plate
+  segment_spacing_m: 3.0                                                   # 10-ft chain-link panels
