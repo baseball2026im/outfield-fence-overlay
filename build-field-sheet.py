@@ -236,7 +236,7 @@ TEMPLATE = """<!DOCTYPE html>
   <div class="foot">
     <b>Arc:</b> apex 80&nbsp;m on bearing 193.5&deg; (home&rarr;2B) · radius 46.6&nbsp;m · length ~115.5&nbsp;m · 39 panels @&nbsp;3&nbsp;m &nbsp;·&nbsp;
     <b>Home plate:</b> 48.051415,&nbsp;11.530371 &nbsp;·&nbsp;
-    <b>Precision:</b> a modern phone's GPS is easily good enough for a training fence; for extra precision, anchor the 5 pins by tape from home plate.
+    <b>Precision:</b> a modern phone's GPS is easily good enough for a training fence.
   </div>
 </div>
 </body>
