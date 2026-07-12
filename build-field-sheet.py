@@ -22,7 +22,7 @@ from staticmap import CircleMarker, Line, StaticMap
 HERE = os.path.dirname(__file__)
 GEO = os.path.join(HERE, "data", "field-overlay.geojson")
 APP_SHOT = os.path.join(HERE, "data", "locus-in-app.png")
-OUT = os.path.join(HERE, "field-sheet.html")
+OUT = os.path.join(HERE, "index.html")  # the guide is the site landing page
 PDF = os.path.join(HERE, "field-sheet.pdf")
 
 MYMAPS = "https://www.google.com/maps/d/viewer?mid=1lenM0C5zkyE6P6zIqa7H9a0x143gxus"
@@ -31,6 +31,7 @@ LOCUS = "https://www.locusmap.app/"
 GOOGLE_SAT = "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
 
 RED, WHITE, BLUE, YELLOW, BLACK, DARK = "#ff2d2d", "#ffffff", "#2b6cff", "#ffcc00", "#000000", "#5a4200"
+ORANGE, CYAN = "#ff9500", "#00e5ff"  # bigger reference variants (read well on green)
 
 
 def coords_of(feat):
@@ -54,8 +55,9 @@ def render_aerial(fc):
             pts = [(x, y) for x, y in g["coordinates"]]
             if fold == "Outfield arcs":
                 if "operational" in n:
-                    m.add_line(Line(pts, RED, 6))          # the fence line
-                # reference arcs omitted — not buildable, keeps the sheet clean
+                    m.add_line(Line(pts, RED, 6))          # the fence line to build
+                # reference arcs (90-122 m variants) are far larger than this
+                # frame, so they're omitted here — the interactive map shows them.
             elif "backstop" in n:
                 m.add_line(Line(pts, BLACK, 4))
             else:
@@ -75,10 +77,14 @@ def render_aerial(fc):
         else:  # chalk endpoints
             m.add_marker(CircleMarker(xy, WHITE, 12)); m.add_marker(CircleMarker(xy, RED, 6))
 
-    # center on the drawn (operational) features only — reference arcs were
-    # filtered out in main(), so they no longer inflate the extent.
-    xs = [c[0] for f in fc["features"] for c in coords_of(f)]
-    ys = [c[1] for f in fc["features"] for c in coords_of(f)]
+    # center on the operational features only — the big reference arcs are drawn
+    # (they sweep out toward the trees/banks) but must not inflate the extent,
+    # or the field would shrink and home plate clip.
+    op = [f for f in fc["features"]
+          if not (f["properties"]["folder"] == "Outfield arcs"
+                  and "reference" in f["properties"]["name"].lower())]
+    xs = [c[0] for f in op for c in coords_of(f)]
+    ys = [c[1] for f in op for c in coords_of(f)]
     center = [(min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2]
     img = m.render(center=center, zoom=20)
     buf = io.BytesIO()
@@ -103,13 +109,6 @@ def embed_shot(path, width=480, quality=82, crop=(0, 180, 1179, 1720)):
 
 def main():
     fc = json.load(open(GEO))
-    # drop reference arcs (not buildable on this field) — keeps the sheet's
-    # aerial framed on the operational features only.
-    fc["features"] = [
-        f for f in fc["features"]
-        if not (f["properties"]["folder"] == "Outfield arcs"
-                and "reference" in f["properties"]["name"].lower())
-    ]
     aerial = render_aerial(fc)
     html = TEMPLATE.format(
         aerial=aerial,
@@ -175,13 +174,16 @@ TEMPLATE = """<!DOCTYPE html>
 
   <p class="purpose">
     This dual-use turf field has <b>no permanent markings</b>, so the outfield fence is re-placed
-    from scratch each session. The <b>red curve</b> is the fence line; the diamond and foul lines
-    orient you, and the five yellow pins are quick anchors. With your phone's GPS and this overlay,
-    one person can walk the line and stand the fence in the same spot every time — no surveying.
+    from scratch each session. The <b>red curve</b> is the <b>operational</b> fence line; you can
+    build a <b>bigger variant</b> instead <b>where the trees and side-banks allow</b> (the
+    interactive map shows all options). The diamond and foul lines orient you, and the five yellow
+    pins are quick
+    anchors. With your phone's GPS and this overlay, you just walk the line and stand the
+    fence in the same spot every time.
   </p>
 
   <img class="aerial" src="{aerial}" alt="Aerial view of the field with the fence overlay" />
-  <div class="cap">Red = fence line to build · yellow = the 5 reference pins · white = diamond &amp; foul lines · black = backstop · blue box = soccer penalty area.</div>
+  <div class="cap">Red = operational fence line · yellow = the 5 pins · white = diamond &amp; foul lines · black = backstop · blue box = soccer penalty area.</div>
 
   <div class="qrs">
     <div class="qr">
@@ -196,8 +198,8 @@ TEMPLATE = """<!DOCTYPE html>
     </div>
     <div class="qr">
       <img src="{qr_locus}" alt="Locus Map install QR" />
-      <div class="t">Install Locus Map</div>
-      <div class="d">Free live-GPS map — iPhone &amp; Android.</div>
+      <div class="t">Install the app</div>
+      <div class="d"><b>Locus Map Lite</b> (iPhone) · <b>Locus Map</b> (Android) — free, live GPS.</div>
     </div>
   </div>
 
@@ -205,7 +207,7 @@ TEMPLATE = """<!DOCTYPE html>
     <div class="col">
       <h2>Load the fence file into Locus Map</h2>
       <ol>
-        <li>Install <b>Locus Map</b> (bottom QR &rarr; the app store for your phone).</li>
+        <li>Install the app (bottom QR): iPhone <b>Locus Map Lite</b>, Android <b>Locus Map</b>.</li>
         <li><b>iPhone / any phone:</b> in Locus Map &rarr; menu (&#9776;) &rarr; <b>Import</b> &rarr; <b>from URL</b>, and paste the <b>Fence file</b> link (scan its QR to copy it).</li>
         <li><b>Android shortcut:</b> just scan the <b>Fence file</b> QR &rarr; the file downloads &rarr; tap <b>Open with Locus Map</b>.</li>
         <li>Import into a folder (e.g.&nbsp;"Baseball"). The arc, diamond and pins now show on the map.</li>
@@ -215,9 +217,9 @@ TEMPLATE = """<!DOCTYPE html>
       <h2>Walk the line &amp; place the fence</h2>
       <ol>
         <li>Tap the <b>GPS / centre</b> button so your dot shows and follows you; wait a moment for the fix to settle.</li>
-        <li><b>Check:</b> stand on home plate (or a foul corner) and confirm your dot sits on that mark.</li>
-        <li>Start at a foul-line <b>corner</b> (where the red arc ends). Walk so your dot tracks the <b>red arc</b>, dropping a cone/post every ~3&nbsp;m (one panel). Use the 5 yellow pins for coarse placement first.</li>
-        <li>Stand the fence sections along the walked line.</li>
+        <li><b>Check:</b> stand on a foul corner and confirm your dot sits on that mark.</li>
+        <li><b>Roll out roughly:</b> use the aerial above to get oriented, then lay the fence out loosely in the arc's shape between the two foul corners.</li>
+        <li><b>Fine-position with the phone:</b> walk the line and nudge each section until your dot sits on the <b>red arc</b>, then stand it upright. The 5 yellow pins mark the key points (corners, mid-arc, centre).</li>
         <li><b>Verify:</b> tape-measure home&nbsp;&rarr;&nbsp;centre pin &asymp; 80&nbsp;m; nudge as needed.</li>
       </ol>
     </div>
